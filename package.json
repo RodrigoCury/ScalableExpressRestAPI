@@ -1,0 +1,24 @@
+{
+  "name": "scalableexpressrestapi",
+  "version": "1.0.0",
+  "description": "Course on Scalable Rest API's",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "nodemon --inspect ./src/index.js",
+    "start": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RodrigoCury/ScalableExpressRestAPI.git"
+  },
+  "author": "Rodrigo Cury",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RodrigoCury/ScalableExpressRestAPI/issues"
+  },
+  "homepage": "https://github.com/RodrigoCury/ScalableExpressRestAPI#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.12"
+  }
+}
