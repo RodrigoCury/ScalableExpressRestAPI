@@ -17,19 +17,19 @@ router.get('/:id', async (req, res) => {
         res.status(200).json(fornecedor)
 
     } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json({ mensagem: error.message })
     }
 })
 
 router.post('/', async (req, res) => {
-    const dadosRecebidos = req.body
-    const fornecedor = new Fornecedor(dadosRecebidos)
-    await fornecedor.criar()
-        .then(() => res.send(JSON.stringify(fornecedor)))
-        .catch(error => {
-            console.log(error)
-            res.status(400).json(error)
-        })
+    try {
+        const dadosRecebidos = req.body
+        const fornecedor = new Fornecedor(dadosRecebidos)
+        await fornecedor.criar()
+        res.status(201).json(fornecedor)
+    } catch (error) {
+        res.status(400).json({ mensagem: error.message })
+    }
 })
 
 router.put('/:id', async (req, res) => {
@@ -40,10 +40,11 @@ router.put('/:id', async (req, res) => {
         const dados = Object.assign({}, dadosRecebidos, { id })
         const fornecedor = new Fornecedor(dados)
         await fornecedor.atualizar()
+        res.status(204)
         res.end()
 
     } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json({ mensagem: error.message })
     }
 })
 
@@ -52,9 +53,10 @@ router.delete('/:id', async (req, res) => {
         const id = req.params.id
         const fornecedor = new Fornecedor({ id })
         await fornecedor.apagar()
+        res.status(204)
         res.end()
     } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json({ mensagem: error.message })
     }
 })
 
