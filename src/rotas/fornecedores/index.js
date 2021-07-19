@@ -14,7 +14,7 @@ router.get('/:id', async (req, res) => {
         const id = req.params.id
         const fornecedor = new Fornecedor({ id });
         await fornecedor.carregar()
-        return res.status(200).json(fornecedor)
+        res.status(200).json(fornecedor)
 
     } catch (error) {
         res.status(400).json(error.message)
@@ -40,8 +40,19 @@ router.put('/:id', async (req, res) => {
         const dados = Object.assign({}, dadosRecebidos, { id })
         const fornecedor = new Fornecedor(dados)
         await fornecedor.atualizar()
-        res.status(200).json(fornecedor)
+        res.end()
 
+    } catch (error) {
+        res.status(400).json(error.message)
+    }
+})
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        const fornecedor = new Fornecedor({ id })
+        await fornecedor.apagar()
+        res.end()
     } catch (error) {
         res.status(400).json(error.message)
     }

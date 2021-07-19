@@ -22,13 +22,19 @@ class Fornecedor {
         return resultado
     }
 
-    async atualizar(id, dadosParaAtualizar) {
+    atualizar(id, dadosParaAtualizar) {
         return Model.update(
             dadosParaAtualizar,
             {
                 where: { id }
             }
         )
+    }
+
+    apagar(id) {
+        return Model.destroy({
+            where: { id }
+        })
     }
 }
 

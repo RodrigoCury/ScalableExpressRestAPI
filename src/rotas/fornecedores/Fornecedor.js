@@ -54,6 +54,12 @@ class Fornecedor {
 
         await TabelaFornecedor.atualizar(this.id, dadosParaAtualizar)
     }
+
+    async apagar() {
+        await TabelaFornecedor.pegarPorId(this.id) // Checar se Fornecedor existe, se não lançará erro
+
+        return TabelaFornecedor.apagar(this.id)
+    }
 }
 
 module.exports = Fornecedor
