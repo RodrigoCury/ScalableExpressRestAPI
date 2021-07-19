@@ -1,4 +1,5 @@
 const TabelaFornecedor = require('./TabelaFornecedor')
+const SemDados = require('../../erros/SemDados')
 
 class Fornecedor {
     constructor({ id, empresa, email, categoria, dataCriacao, dataAtualizacao, versao }) {
@@ -50,7 +51,7 @@ class Fornecedor {
         })
 
         if (Object.keys(dadosParaAtualizar).length === 0) {
-            throw new Error('Não foram Fornecidos dados para alteração')
+            throw new SemDados()
         }
 
         await TabelaFornecedor.atualizar(this.id, dadosParaAtualizar)
