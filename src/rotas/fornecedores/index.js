@@ -17,7 +17,10 @@ router.get('/:id', async (req, res) => {
         res.status(200).json(fornecedor)
 
     } catch (error) {
-        res.status(400).json({ mensagem: error.message })
+        res.status(error.status).json({
+            mensagem: error.message,
+            idErro: error.idErro
+        })
     }
 })
 
@@ -44,7 +47,10 @@ router.put('/:id', async (req, res) => {
         res.end()
 
     } catch (error) {
-        res.status(400).json({ mensagem: error.message })
+        res.status(error.status).json({
+            mensagem: error.message,
+            idErro: error.idErro
+        })
     }
 })
 
