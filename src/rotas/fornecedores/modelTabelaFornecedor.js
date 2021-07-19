@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize')
 const instancia = require('../../banco-de-dados')
 
 const colunas = {
-    expresa: {
+    empresa: {
         type: Sequelize.STRING,
         allowNull: false,
     },
