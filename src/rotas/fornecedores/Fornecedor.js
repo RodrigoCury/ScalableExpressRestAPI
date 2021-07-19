@@ -12,6 +12,7 @@ class Fornecedor {
     }
 
     async criar() {
+        this.validar()
         const resultado = await TabelaFornecedor.inserir({
             empresa: this.empresa,
             email: this.email,
@@ -59,6 +60,26 @@ class Fornecedor {
         await TabelaFornecedor.pegarPorId(this.id) // Checar se Fornecedor existe, se não lançará erro
 
         return TabelaFornecedor.apagar(this.id)
+    }
+
+    validar() {
+        const campos = [
+            'empresa', 'email', 'categoria'
+        ]
+
+        const erros = []
+
+        campos.forEach(campo => {
+            if (typeof this[campo] !== 'string') {
+                erros.push(`O campo '${campo}' recebido é '${typeof this[campo]}', mas deveria ser string; `)
+            } else if (this[campo].length === 0) {
+                erros.push(`O campo '${campo}' recebido é string vazia; `)
+            }
+        })
+
+        if (erros.length) {
+            throw new Error(''.concat(...erros))
+        }
     }
 }
 
