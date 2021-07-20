@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     )
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
         const fornecedor = new Fornecedor({ id });
@@ -17,25 +17,22 @@ router.get('/:id', async (req, res) => {
         res.status(200).json(fornecedor)
 
     } catch (error) {
-        res.status(error.status).json({
-            mensagem: error.message,
-            idErro: error.idErro
-        })
+        next(error)
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     try {
         const dadosRecebidos = req.body
         const fornecedor = new Fornecedor(dadosRecebidos)
         await fornecedor.criar()
         res.status(201).json(fornecedor)
     } catch (error) {
-        res.status(400).json({ mensagem: error.message })
+        next(error)
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
 
     try {
         const id = req.params.id
@@ -47,14 +44,11 @@ router.put('/:id', async (req, res) => {
         res.end()
 
     } catch (error) {
-        res.status(error.status).json({
-            mensagem: error.message,
-            idErro: error.idErro
-        })
+        next(error)
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
         const fornecedor = new Fornecedor({ id })
@@ -62,7 +56,7 @@ router.delete('/:id', async (req, res) => {
         res.status(204)
         res.end()
     } catch (error) {
-        res.status(400).json({ mensagem: error.message })
+        next(error)
     }
 })
 
