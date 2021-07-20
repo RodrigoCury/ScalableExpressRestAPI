@@ -42,14 +42,22 @@ class Serializador {
 }
 
 class SerializadorFornecedor extends Serializador {
-    constructor(contentType) {
+    constructor(contentType, camposExtras = []) {
         super(contentType)
-        this.camposPublicos = ['id', 'empresa', 'categoria']
+        this.camposPublicos = ['id', 'empresa', 'categoria', ...camposExtras]
+    }
+}
+
+class SerializadorErro extends Serializador {
+    constructor(contentType, camposExtras = []) {
+        super(contentType)
+        this.camposPublicos = ['idErro', 'message', ...camposExtras]
     }
 }
 
 module.exports = {
     Serializador,
     SerializadorFornecedor,
+    SerializadorErro,
     formatosAceitos: ['application/json'],
 }
