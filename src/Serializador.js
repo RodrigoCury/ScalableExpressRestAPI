@@ -42,8 +42,6 @@ class Serializador {
     filtarObjeto(dados) {
         const novoObjeto = {}
 
-        console.log(this);
-
         this.camposPublicos.forEach(campo => {
             if (dados.hasOwnProperty(campo)) {
                 novoObjeto[campo] = dados[campo]
