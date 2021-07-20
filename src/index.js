@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
-const NaoEncontrado = require('./erros/NaoEncontrado')
+const ConteudoNaoSuportado = require('./erros/ConteudoNaoSuportado')
+const formatosAceitos = require('./Serializador').formatosAceitos
 
 // Declaring the App
 const app = express()
@@ -12,6 +13,23 @@ const PORT = 3000
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Checagem de ContentType 
+app.use((req, res, next) => {
+    let formatoRequisitado = req.get('Accept')
+
+    if (formatoRequisitado === '*/*') {
+        formatoRequisitado = "application/json"
+    }
+
+    if (!formatosAceitos.includes(formatoRequisitado)) {
+        throw new ConteudoNaoSuportado(formatoRequisitado)
+    }
+
+    res.setHeader("Content-Type", formatoRequisitado)
+
+    next()
+})
 
 /**
  * Rotas
