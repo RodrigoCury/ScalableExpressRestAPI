@@ -1,5 +1,6 @@
 const TabelaFornecedor = require('./TabelaFornecedor')
 const SemDados = require('../../erros/SemDados')
+const CampoInvalido = require('../../erros/CampoInvalido')
 
 class Fornecedor {
     constructor({ id, empresa, email, categoria, dataCriacao, dataAtualizacao, versao }) {
@@ -79,7 +80,8 @@ class Fornecedor {
         })
 
         if (erros.length) {
-            throw new Error(''.concat(...erros))
+            console.log(erros);
+            throw new CampoInvalido(erros)
         }
     }
 }
