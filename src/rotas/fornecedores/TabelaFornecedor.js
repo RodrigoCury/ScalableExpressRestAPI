@@ -3,7 +3,7 @@ const NaoEncontrado = require('../../erros/NaoEncontrado')
 
 class Fornecedor {
     listar() {
-        return Model.findAll()
+        return Model.findAll({ raw: true })
     }
 
     inserir(fornecedor) {
