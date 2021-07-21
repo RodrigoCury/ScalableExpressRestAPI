@@ -83,7 +83,7 @@ class SerializadorErro extends Serializador {
 class SerializadorProduto extends Serializador {
     constructor(contentType, camposExtras = []) {
         super(contentType);
-        this.camposPublicos = ['titulo', 'preco', 'fornecedor', ...camposExtras]
+        this.camposPublicos = ['id', 'titulo', 'preco', 'fornecedor', ...camposExtras]
         this.tagSingular = 'produto'
         this.tagPlural = 'produtos'
     }
