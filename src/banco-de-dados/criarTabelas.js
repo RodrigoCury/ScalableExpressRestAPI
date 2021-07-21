@@ -1,8 +1,23 @@
-const Model = require('../rotas/fornecedores/modelTabelaFornecedor');
+const tabelas = [
+    require('../rotas/fornecedores/modelTabelaFornecedor'),
+    require('../rotas/fornecedores/produtos/ModelTabelaProdutos'),
+]
 
-Model.sync()
-    .then(() => console.log("Tabela Fornecedor Criada com sucesso"))
-    .catch(error => console.error(error))
+async function criarTabelas() {
+    for (let model of tabelas) {
+        await model
+            .sync()
+            .then(() => console.log(`Tabela ${model.name} criada com sucesso`))
+            .catch(error => {
+                console.error(`Tabela ${model.name} Não foi criada`)
+                console.error(error)
+            })
+    }
+}
+
+criarTabelas()
+
+
 
 /**
  * To Run, on terminal type
