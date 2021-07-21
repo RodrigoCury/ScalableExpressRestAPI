@@ -92,6 +92,6 @@ router.delete('/:id', async (req, res, next) => {
 })
 
 // Usar Rotas de Produtos por Fornecedor
-router.use('/:id/produtos', routerProdutos)
+router.use('/:idFornecedor/produtos', routerProdutos)
 
 module.exports = router
