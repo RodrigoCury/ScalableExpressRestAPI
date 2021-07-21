@@ -2,8 +2,8 @@
 const TabelaFornecedor = require('./TabelaFornecedor')
 
 // Roteadores
-const router = require('express').Router()
-const routerProdutos = require('./produtos/index')
+const roteador = require('express').Router()
+const roteadorProdutos = require('./produtos/index')
 
 // Fornecedor Model
 const Fornecedor = require('./Fornecedor')
@@ -11,8 +11,12 @@ const Fornecedor = require('./Fornecedor')
 // Serializador de resposta
 const SerializadorFornecedor = require('../../Serializador').SerializadorFornecedor
 
+/**
+ * Setando as Rotas
+ */
+
 // GET Lista
-router.get('/', async (req, res) => {
+roteador.get('/', async (req, res) => {
     const resultados = await TabelaFornecedor.listar()
 
     // Serializador
@@ -22,7 +26,7 @@ router.get('/', async (req, res) => {
 })
 
 // GET pelo ID
-router.get('/:id', async (req, res, next) => {
+roteador.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
         const fornecedor = new Fornecedor({ id });
@@ -41,7 +45,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // POST novo Fornecedor
-router.post('/', async (req, res, next) => {
+roteador.post('/', async (req, res, next) => {
     try {
         const dadosRecebidos = req.body
         const fornecedor = new Fornecedor(dadosRecebidos)
@@ -57,9 +61,8 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-
 // Put Atualizar informações
-router.put('/:id', async (req, res, next) => {
+roteador.put('/:id', async (req, res, next) => {
 
     try {
         const id = req.params.id
@@ -77,7 +80,7 @@ router.put('/:id', async (req, res, next) => {
 })
 
 // DELETE Fornecedor
-router.delete('/:id', async (req, res, next) => {
+roteador.delete('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
         const fornecedor = new Fornecedor({ id })
@@ -91,7 +94,21 @@ router.delete('/:id', async (req, res, next) => {
     }
 })
 
-// Usar Rotas de Produtos por Fornecedor
-router.use('/:idFornecedor/produtos', routerProdutos)
+// Verificação de Fornecedores
+const verificarFornecedor = async (req, res, next) => {
+    try {
+        const idFornecedor = req.params.idFornecedor
 
-module.exports = router
+        const fornecedor = new Fornecedor({ id: idFornecedor })
+        await fornecedor.carregar()
+        req.fornecedor = fornecedor
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
+// Usar Rotas de Produtos por Fornecedor
+roteador.use('/:idFornecedor/produtos', verificarFornecedor, roteadorProdutos)
+
+module.exports = roteador
