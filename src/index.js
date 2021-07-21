@@ -1,10 +1,17 @@
+// .ENV 
 require('dotenv').config()
+
+// Express
 const express = require('express')
+
+// Manipulador de Erros
 const ConteudoNaoSuportado = require('./erros/ConteudoNaoSuportado')
-const formatosAceitos = require('./Serializador').formatosAceitos
 const SerializadorErro = require('./Serializador').SerializadorErro
 
-// Declaring the App
+// Lista de Content-Types Aceitos
+const formatosAceitos = require('./Serializador').formatosAceitos
+
+// Declarando o APP
 const app = express()
 
 /**
@@ -14,7 +21,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Checagem de ContentType 
+// Checagem de Content-Type 
 app.use((req, res, next) => {
     let formatoRequisitado = req.get('Accept')
 
@@ -35,8 +42,9 @@ app.use((req, res, next) => {
  * Rotas
  */
 
-const router = require('./rotas/fornecedores')
-app.use('/api/fornecedores', router)
+const routerFornecedores = require('./rotas/fornecedores')
+app.use('/api/fornecedores', routerFornecedores)
+
 
 // Lidando com erros Middleware
 app.use((erro, req, res, next) => {
@@ -47,7 +55,7 @@ app.use((erro, req, res, next) => {
     res.send(serializador.serializar(erro))
 })
 
-// Run App
+// Rodar App
 app.listen(process.env.PORT, () => {
     console.log(`
         Servidor Subido Com Sucesso
