@@ -1,8 +1,17 @@
-const router = require('express').Router()
+// Tabela MySQL
 const TabelaFornecedor = require('./TabelaFornecedor')
+
+// Roteadores
+const router = require('express').Router()
+const routerProdutos = require('./produtos/index')
+
+// Fornecedor Model
 const Fornecedor = require('./Fornecedor')
+
+// Serializador de resposta
 const SerializadorFornecedor = require('../../Serializador').SerializadorFornecedor
 
+// GET Lista
 router.get('/', async (req, res) => {
     const resultados = await TabelaFornecedor.listar()
 
@@ -12,6 +21,7 @@ router.get('/', async (req, res) => {
     res.send(serializador.serializar(resultados))
 })
 
+// GET pelo ID
 router.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
@@ -30,6 +40,7 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
+// POST novo Fornecedor
 router.post('/', async (req, res, next) => {
     try {
         const dadosRecebidos = req.body
@@ -46,6 +57,8 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+
+// Put Atualizar informações
 router.put('/:id', async (req, res, next) => {
 
     try {
@@ -63,6 +76,7 @@ router.put('/:id', async (req, res, next) => {
     }
 })
 
+// DELETE Fornecedor
 router.delete('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
@@ -76,5 +90,8 @@ router.delete('/:id', async (req, res, next) => {
         next(error)
     }
 })
+
+// Usar Rotas de Produtos por Fornecedor
+router.use('/:id/produtos', routerProdutos)
 
 module.exports = router
