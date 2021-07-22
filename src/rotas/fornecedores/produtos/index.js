@@ -30,12 +30,13 @@ roteador.get('/:idProduto', async (req, res, next) => {
         const idFornecedor = req.fornecedor.id
         const idProduto = req.params.idProduto
 
-        const produto = new Produto({ id: idProduto, fornecedor: idFornecedor })
+        const produto = new Produto({
+            id: idProduto,
+            fornecedor: idFornecedor
+        })
         await produto.carregar()
 
         const serializador = new Serializador(res.getHeader('Content-Type'), ['estoque', 'dataCriacao', 'dataAtualizacao', 'versao',])
-
-        console.log(produto);
 
         res.send(serializador.serializar(produto))
     } catch (error) {
