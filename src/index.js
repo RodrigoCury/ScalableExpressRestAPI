@@ -38,6 +38,13 @@ app.use((req, res, next) => {
     next()
 })
 
+// Setando Headers de Resposta Gerais
+app.use((req, res, next) => {
+    res.setHeader("X-Powered-By", "Gatito")
+
+    next()
+})
+
 /**
  * Rotas
  */
