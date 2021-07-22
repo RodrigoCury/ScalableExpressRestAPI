@@ -65,6 +65,23 @@ roteador.post('/', async (req, res, next) => {
 
 })
 
+roteador.put('/:idProduto', async (req, res, next) => {
+    try {
+        const idFornecedor = req.fornecedor.id
+        const idProduto = req.params.idProduto
+        const dadosRecebidos = req.body
+        const dados = Object.assign({}, dadosRecebidos, { id: idProduto, fornecedor: idFornecedor })
+        const produto = new Produto(dados)
+        await produto.atualizar()
+
+        res.status(204)
+        res.end()
+
+    } catch (error) {
+        next(error)
+    }
+})
+
 roteador.delete('/:idProduto', async (req, res, next) => {
     try {
         const idFornecedor = req.fornecedor.id
