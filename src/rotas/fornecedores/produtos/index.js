@@ -14,6 +14,7 @@ const Serializador = require('../../../Serializador').SerializadorProduto
  * Setando As Rotas
  */
 
+// GET lista de produtos do fornecedor
 roteador.get('/', async (req, res) => {
     const idFornecedor = req.fornecedor.id
 
@@ -25,6 +26,7 @@ roteador.get('/', async (req, res) => {
 
 })
 
+// GET único produtor por id
 roteador.get('/:idProduto', async (req, res, next) => {
     try {
         const idFornecedor = req.fornecedor.id
@@ -44,6 +46,7 @@ roteador.get('/:idProduto', async (req, res, next) => {
     }
 })
 
+// Post Cria um novo produto
 roteador.post('/', async (req, res, next) => {
 
     try {
@@ -65,6 +68,7 @@ roteador.post('/', async (req, res, next) => {
 
 })
 
+// Atualiza um produto ja existente
 roteador.put('/:idProduto', async (req, res, next) => {
     try {
         const idFornecedor = req.fornecedor.id
@@ -82,6 +86,7 @@ roteador.put('/:idProduto', async (req, res, next) => {
     }
 })
 
+// DELETE deleta um produto existente
 roteador.delete('/:idProduto', async (req, res, next) => {
     try {
         const idFornecedor = req.fornecedor.id
@@ -96,5 +101,28 @@ roteador.delete('/:idProduto', async (req, res, next) => {
         next(error)
     }
 })
+
+// Venda de Produto
+roteador.post('/:idProduto/diminuir-estoque/', async (req, res, next) => {
+    try {
+        const idFornecedor = req.fornecedor.id
+        const idProduto = req.params.idProduto
+
+        const produto = new Produto({ id: idProduto, fornecedor: idFornecedor })
+        await produto.carregar()
+
+        const quantidadeVendida = req.body.quantidade
+
+        await produto.diminuirEstoque(quantidadeVendida)
+
+        res.status(204)
+        res.end()
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+console.log(roteador);
 
 module.exports = roteador
