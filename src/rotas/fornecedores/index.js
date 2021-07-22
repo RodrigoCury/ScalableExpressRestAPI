@@ -36,8 +36,29 @@ roteador.get('/:id', async (req, res, next) => {
         const serializador = new SerializadorFornecedor(res.getHeader('Content-Type'), [
             'email', 'dataCriacao', 'dataAtualizacao', 'versao'
         ])
+
+        // Setar os Headers de Resposta
+        SerializadorFornecedor.setHeader(res, fornecedor)
+
         res.status(200)
         res.send(serializador.serializar(fornecedor))
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+// HEAD pelo ID
+roteador.head('/:id', async (req, res, next) => {
+    try {
+        const id = req.params.id
+        const fornecedor = new Fornecedor({ id });
+        await fornecedor.carregar()
+
+        // Setar os Headers de Resposta
+        SerializadorFornecedor.setHeader(res, fornecedor)
+
+        res.status(200).end()
 
     } catch (error) {
         next(error)
@@ -53,6 +74,9 @@ roteador.post('/', async (req, res, next) => {
 
         // Serializador
         const serializador = new SerializadorFornecedor(res.getHeader('Content-Type'))
+
+        // Setar os Headers de Resposta
+        SerializadorFornecedor.setHeader(res, fornecedor)
 
         res.status(201)
         res.send(serializador.serializar(fornecedor))
@@ -70,6 +94,10 @@ roteador.put('/:id', async (req, res, next) => {
         const dados = Object.assign({}, dadosRecebidos, { id })
         const fornecedor = new Fornecedor(dados)
         await fornecedor.atualizar()
+        await fornecedor.carregar()
+
+        // Setar os Headers de Resposta
+        SerializadorFornecedor.setHeader(res, fornecedor)
 
         res.status(204)
         res.end()
