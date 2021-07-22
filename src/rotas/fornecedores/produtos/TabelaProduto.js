@@ -33,6 +33,15 @@ class TabelaProdutos {
         return Modelo.create(produto)
     }
 
+    atualizar(idProduto, idFornecedor, dadosParaAtualizar) {
+        return Modelo.update(dadosParaAtualizar, {
+            where: {
+                id: idProduto,
+                fornecedor: idFornecedor
+            }
+        })
+    }
+
     apagar(idFornecedor, idProduto) {
         return Modelo.destroy({
             where: {
