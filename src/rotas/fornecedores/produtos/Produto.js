@@ -2,6 +2,7 @@
 const TabelaProduto = require('./TabelaProduto')
 
 // Erros Customizados
+const NaoHaEstoqueSuficiente = require('../../../erros/NaoHaEstoqueSuficiente')
 const CampoInvalido = require('../../../erros/CampoInvalido')
 const SemDados = require('../../../erros/SemDados')
 
@@ -56,6 +57,20 @@ class Produto {
         await TabelaProduto.pegarPorId(this.fornecedor, this.id) // Retorna Erro se não existir no DB
 
         return TabelaProduto.apagar(this.fornecedor, this.id)
+    }
+
+    async diminuirEstoque(quantidade) {
+        if (typeof quantidade !== "number") {
+            throw new CampoInvalido("O campo 'Quantidade' recebido deve ser do tipo 'number'")
+        } else if (quantidade > this.estoque && quantidade > 0) {
+            throw new NaoHaEstoqueSuficiente()
+        } else if (quantidade <= 0) {
+            throw new CampoInvalido("O campo 'quantidade' deve ter valor positivo e não 0")
+        }
+
+        this.estoque -= quantidade
+
+        return TabelaProduto.subtrair(this.id, this.fornecedor, 'estoque', this.estoque)
     }
 
     validarCriacao() {
