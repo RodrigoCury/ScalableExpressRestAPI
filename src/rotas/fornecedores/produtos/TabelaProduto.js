@@ -1,4 +1,8 @@
+// Sequelize Model
 const Modelo = require('./ModelTabelaProdutos');
+
+// Erro Não Encontrado
+const ProdutoNaoEncontrado = require('../../../erros/ProdutoNaoEncontrado')
 
 class TabelaProdutos {
     listar(idFornecedor) {
@@ -10,13 +14,19 @@ class TabelaProdutos {
         })
     }
 
-    pegarPorId(idFornecedor, idProduto) {
-        return Modelo.findOne({
+    async pegarPorId(idFornecedor, idProduto) {
+        const produtoEncontrado = await Modelo.findOne({
             where: {
                 id: idProduto,
                 fornecedor: idFornecedor,
-            }
+            },
         })
+
+        if (!produtoEncontrado) {
+            throw new ProdutoNaoEncontrado()
+        }
+
+        return produtoEncontrado
     }
 
     inserir(produto) {
