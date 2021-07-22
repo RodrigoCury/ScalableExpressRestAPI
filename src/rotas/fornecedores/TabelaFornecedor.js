@@ -1,5 +1,5 @@
 const Model = require('./modelTabelaFornecedor');
-const NaoEncontrado = require('../../erros/NaoEncontrado')
+const FornecedorNaoEncontrado = require('../../erros/FornecedorNaoEncontrado')
 
 class Fornecedor {
     listar() {
@@ -17,7 +17,7 @@ class Fornecedor {
 
 
         if (!resultado) {
-            throw new NaoEncontrado()
+            throw new FornecedorNaoEncontrado()
         }
 
         return resultado
