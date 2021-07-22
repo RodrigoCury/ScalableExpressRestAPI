@@ -69,6 +69,15 @@ class SerializadorFornecedor extends Serializador {
         this.tagSingular = 'fornecedor'
         this.tagPlural = 'fornecedores'
     }
+
+    static setHeader(res, fornecedor) {
+        res.set("ETag", fornecedor.versao)
+
+        const timestamp = new Date(fornecedor.dataAtualizacao).getTime()
+        res.set("Last-Modified", timestamp)
+
+        res.set("Location", `/api/fornecedores/${fornecedor.id}`)
+    }
 }
 
 class SerializadorErro extends Serializador {
@@ -86,6 +95,15 @@ class SerializadorProduto extends Serializador {
         this.camposPublicos = ['id', 'titulo', 'preco', 'fornecedor', ...camposExtras]
         this.tagSingular = 'produto'
         this.tagPlural = 'produtos'
+    }
+
+    static setHeader(res, produto) {
+        res.set("ETag", produto.versao)
+
+        const timestamp = new Date(produto.dataAtualizacao).getTime()
+        res.set("Last-Modified", timestamp)
+
+        res.set("Location", `/api/fornecedores/${produto.fornecedor}/produtos/${produto.id}`)
     }
 }
 
