@@ -1,8 +1,10 @@
+const instancia = require('../../../banco-de-dados');
+
 // Sequelize Model
 const Modelo = require('./ModelTabelaProdutos');
 
 // Erro Não Encontrado
-const ProdutoNaoEncontrado = require('../../../erros/ProdutoNaoEncontrado')
+const ProdutoNaoEncontrado = require('../../../erros/ProdutoNaoEncontrado');
 
 class TabelaProdutos {
     listar(idFornecedor) {
@@ -48,6 +50,23 @@ class TabelaProdutos {
                 id: idProduto,
                 fornecedor: idFornecedor
             }
+        })
+    }
+
+    subtrair(idProduto, idFornecedor, campo, quantidade) {
+        return instancia.transaction(async transacao => {
+            const produto = await Modelo.findOne({
+                where: {
+                    id: idProduto,
+                    fornecedor: idFornecedor
+                }
+            })
+
+            produto[campo] = quantidade
+
+            await produto.save()
+
+            return produto
         })
     }
 }
