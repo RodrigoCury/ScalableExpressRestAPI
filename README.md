@@ -2,7 +2,7 @@
 
 Curso de API's REST escaláveis da Alura
 
-> # Ids de Erros Nas Respostas
+> ## Ids de Erros Nas Respostas
 > ### - IdErro 0 : FornecedorNaoEncontrado
 >> #### *Id do Fornecedor não encontrado no Banco de Dados*
 > 
