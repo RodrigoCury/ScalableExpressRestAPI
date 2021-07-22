@@ -40,7 +40,31 @@ roteador.get('/:idProduto', async (req, res, next) => {
 
         const serializador = new Serializador(res.getHeader('Content-Type'), ['estoque', 'dataCriacao', 'dataAtualizacao', 'versao',])
 
+        // Setando os Headers da Respota
+        Serializador.setHeader(res, produto)
+
         res.send(serializador.serializar(produto))
+    } catch (error) {
+        next(error)
+    }
+})
+
+// HEAD
+roteador.head('/:idProduto', async (req, res, next) => {
+    try {
+        const idFornecedor = req.fornecedor.id
+        const idProduto = req.params.idProduto
+
+        const produto = new Produto({
+            id: idProduto,
+            fornecedor: idFornecedor
+        })
+        await produto.carregar()
+
+        // Setando os Headers da Respota
+        Serializador.setHeader(res, produto)
+
+        res.status(200).end()
     } catch (error) {
         next(error)
     }
@@ -60,6 +84,9 @@ roteador.post('/', async (req, res, next) => {
 
         const serializador = new Serializador(res.getHeader('Content-type'), ['estoque', 'dataCriacao', 'dataAtualizacao', 'versao'])
 
+        // Setando os Headers da Respota
+        Serializador.setHeader(res, produto)
+
         res.status(201)
         res.send(serializador.serializar(produto))
     } catch (error) {
@@ -77,6 +104,10 @@ roteador.put('/:idProduto', async (req, res, next) => {
         const dados = Object.assign({}, dadosRecebidos, { id: idProduto, fornecedor: idFornecedor })
         const produto = new Produto(dados)
         await produto.atualizar()
+        await produto.carregar()
+
+        // Setando os Headers da Respota
+        Serializador.setHeader(res, produto)
 
         res.status(204)
         res.end()
@@ -114,6 +145,10 @@ roteador.post('/:idProduto/diminuir-estoque/', async (req, res, next) => {
         const quantidadeVendida = req.body.quantidade
 
         await produto.diminuirEstoque(quantidadeVendida)
+        await produto.carregar()
+
+        // Setando os Headers da Respota
+        Serializador.setHeader(res, produto)
 
         res.status(204)
         res.end()
@@ -122,7 +157,5 @@ roteador.post('/:idProduto/diminuir-estoque/', async (req, res, next) => {
         next(error)
     }
 })
-
-console.log(roteador);
 
 module.exports = roteador
