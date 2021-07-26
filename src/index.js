@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 
 // Setando Headers de Resposta Gerais
 app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
     res.setHeader("X-Powered-By", "Gatito")
 
     next()
