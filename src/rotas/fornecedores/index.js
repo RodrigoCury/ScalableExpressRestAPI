@@ -15,6 +15,20 @@ const SerializadorFornecedor = require('../../Serializador').SerializadorFornece
  * Setando as Rotas
  */
 
+// OPTIONS
+roteador.options('/', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, HEAD')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
+})
+
+// OPTIONS
+roteador.options('/:id', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, HEAD')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
+})
+
 // GET Lista
 roteador.get('/', async (req, res) => {
     const resultados = await TabelaFornecedor.listar()

@@ -14,6 +14,23 @@ const Serializador = require('../../../Serializador').SerializadorProduto
  * Setando As Rotas
  */
 
+// OPTIONS
+roteador.options('/', (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, HEAD')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
+})
+
+// OPTIONS
+roteador.options('/:id', (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, HEAD')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
+})
+
+
 // GET lista de produtos do fornecedor
 roteador.get('/', async (req, res) => {
     const idFornecedor = req.fornecedor.id
@@ -131,6 +148,14 @@ roteador.delete('/:idProduto', async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+})
+
+// OPTIONS
+roteador.options('/:idProduto/diminuir-estoque/', (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader('Access-Control-Allow-Methods', 'POST')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
 })
 
 // Venda de Produto
